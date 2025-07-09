@@ -20,7 +20,7 @@ tickers = [
 ]
 
 tickers = check_tickers(tickers) #filters already downloaded tickers
-#download_stock_data(tickers)
+download_stock_data(tickers)
 
 sim = Simulator()
 sim.simulate()

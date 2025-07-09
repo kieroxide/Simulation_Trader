@@ -42,7 +42,7 @@ def download_stock_data(tickers):
 
         print(f"Downloading data for {symbol}...")
         ticker = yf.Ticker(symbol)
-        df = ticker.history(start="2010-01-01", end="2025-01-01", interval="1d")
+        df = ticker.history(start="2023-01-01", end=dt.now().date(), interval="1d")
 
         done_tickers.append(symbol)
         # Save to CSV
