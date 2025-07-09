@@ -9,9 +9,8 @@ def check_tickers(tickers):
     if os.path.exists(filepath):
         df = pd.read_csv(filepath)
         existing_tickers = df.iloc[:, 0].tolist()
-        print(existing_tickers)
+
         new_tickers = []
-        folder = "stock_data"
         for ticker in tickers:
             if ticker not in existing_tickers:
                 new_tickers.append(ticker)
@@ -51,3 +50,25 @@ def download_stock_data(tickers):
 
     done_tickers = pd.DataFrame(done_tickers, columns=['Tickers'])
     done_tickers.to_csv(f"{folder}/Stock_List.csv" , index=False, header=True)
+
+def read_current_stock_price(date, ticker):
+    if not date:
+        print("Invalid date to read stock price")
+        return
+    if not ticker:
+        print("Invalid ticker to read stock price")
+        return
+    
+    csv_path = f"stock_data/{ticker}.csv"
+    df = pd.read_csv(csv_path)
+    df['Date'] = pd.to_datetime(df['Date'], utc=True)
+    if df['Date'].isnull().any():
+        print("Warning: some dates failed to convert and will be NaT")
+    df.isna()
+    print(df)
+    
+    date = pd.to_datetime(date)
+    date = date.normalize()
+    print(date)
+    filtered = df[df['Date'].dt.date == date.date()]
+    print(filtered)

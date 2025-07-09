@@ -1,6 +1,10 @@
-from portfolio import Portfolio
-from stock_scraper import *
+from Portfolio import Portfolio
+from Stock_Scraper import *
+from Simulator import *
 import yfinance as yf
+
+
+tradeTime = 12
 
 tickers = [
     "AAPL", "MSFT", "GOOGL", "AMZN", "TSLA", "META", "NVDA", "BRK-B", "UNH", "JNJ",
@@ -16,8 +20,11 @@ tickers = [
 ]
 
 tickers = check_tickers(tickers) #filters already downloaded tickers
-download_stock_data(tickers)
+#download_stock_data(tickers)
 port = Portfolio(10000)
 
+read_current_stock_price("2010-01-05", 'AAPL')
 
+while True:
+    pass
 
