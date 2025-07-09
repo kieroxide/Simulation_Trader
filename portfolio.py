@@ -1,8 +1,11 @@
+from Stock_Scraper import read_current_stock_price
+
 class Portfolio:
     def __init__(self, starting_balance):
         self.balance = starting_balance
         self.stocks = {}
         self.logs = []
+        self.profit = 0
 
     def buy_stock(self, symbol, price, quantity):
         cost = price * quantity
@@ -18,7 +21,7 @@ class Portfolio:
 
             new_qty = prev_qty + quantity
             new_avg = (prev_qty * prev_avg + quantity * price) / new_qty
-            
+
             self.stocks[symbol]['quantity'] = new_qty
             self.stocks[symbol]['avg_price'] = new_avg
         else:
@@ -34,6 +37,7 @@ class Portfolio:
         self.stocks[symbol]['quantity'] -= quantity
         proceeds = price * quantity
         self.balance += proceeds
+        self.profit += proceeds
 
         if self.stocks[symbol]['quantity'] == 0:
             del self.stocks[symbol]
@@ -46,20 +50,27 @@ class Portfolio:
         self.stocks = {}
         self.logs = []
 
-    def evaluate(self, current_prices, print=False):
+    def evaluate(self, date, symbol, show=False):
         total_stock_value = 0
 
         for symbol, data in self.stocks.items():
             quantity = data['quantity']
-            if symbol in current_prices:
-                price = current_prices[symbol]
-                total_stock_value += quantity * price
+            price = read_current_stock_price(date, symbol)
+            if(price == None):
+                price = 0
+            total_stock_value += quantity * price
 
         total_value = self.balance + total_stock_value
 
-        if print:
+        if show:
             print(f"Cash: £{self.balance:.2f}")
             print(f"Stock value: £{total_stock_value:.2f}")
             print(f"Total portfolio value: £{total_value:.2f}")
 
         return total_value
+
+    def get_stock_info(self, symbol):
+        if symbol in self.stocks:
+            return self.stocks[symbol]
+        else:
+            return None

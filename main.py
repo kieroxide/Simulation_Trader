@@ -21,10 +21,7 @@ tickers = [
 
 tickers = check_tickers(tickers) #filters already downloaded tickers
 #download_stock_data(tickers)
-port = Portfolio(10000)
 
-read_current_stock_price("2010-01-05", 'AAPL')
-
-while True:
-    pass
+sim = Simulator()
+sim.simulate()
 
